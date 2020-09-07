@@ -1,0 +1,32 @@
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import matplotlib.gridspec as gridspec
+import numpy as np
+
+
+fig = plt.figure(constrained_layout=True, figsize=(11, 8.5))
+fig.set_constrained_layout_pads(w_pad=2./12., h_pad=4./12.,
+            hspace=0., wspace=0.)
+page_grid = gridspec.GridSpec(nrows=2, ncols=1, figure=fig)
+
+fig.suptitle("My BIG Label", fontweight="bold", fontsize="x-large", y=0.98)
+
+
+# this doesn't appear to do anything with constrained_layout=True
+page_grid.update(left=0.2, right=0.8, bottom=0.2, top=0.8)
+
+top_row_grid = gridspec.GridSpecFromSubplotSpec(1, 3, subplot_spec=page_grid[0])
+for i in range(3):
+    ax = fig.add_subplot(top_row_grid[:, i], aspect="equal")
+
+n_bottom_row_plots = 10
+qc_grid = gridspec.GridSpecFromSubplotSpec(1, n_bottom_row_plots, subplot_spec=page_grid[1])
+for i, metric in enumerate(range(n_bottom_row_plots)):
+    ax = fig.add_subplot(qc_grid[:, i])
+    plt.plot(np.arange(5), np.arange(5))
+
+
+# this ruins the constrained layout
+# plt.subplots_adjust(left=0.2,right=0.8, bottom=0.2, top=0.8)
+
+fig.savefig("temp.png", facecolor="coral")
